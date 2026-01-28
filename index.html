@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análisis de Proyectos - MyM Torres & Colobus</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #1e3a5f;
+      --primary-light: #2d5a8a;
+      --accent: #e07b39;
+      --accent-light: #f5a623;
+      --text: #333;
+      --text-light: #666;
+      --bg: #f8f9fa;
+      --white: #fff;
+      --border: #e0e4e8;
+      --success: #2e7d32;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Layout */
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--primary);
+      color: var(--white);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 24px 0;
+    }
+
+    .sidebar-header {
+      padding: 0 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-header h1 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-header p {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .nav-section {
+      padding: 8px 12px;
+    }
+
+    .nav-section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.5;
+      padding: 8px 12px;
+      margin-top: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .nav-item.active {
+      background: #FFC107;
+      font-weight: 500;
+      color: #1e3a5f;
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      opacity: 0.8;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 32px 48px;
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    h2 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .section-subtitle {
+      color: var(--text-light);
+      font-size: 1rem;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin: 32px 0 16px;
+      font-weight: 600;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .cards-grid .card {
+      margin-bottom: 0;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .projects-grid .card {
+      margin-bottom: 0;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--white);
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-badge {
+      display: inline-block;
+      background: var(--bg);
+      color: var(--text-light);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .card-content {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .card-content ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .card-content li {
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .card-content li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: 6px;
+      background: #FFC107;
+      border-radius: 50%;
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .feature-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .feature-item h4 {
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-item h4::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #FFC107;
+      border-radius: 2px;
+    }
+
+    .feature-item p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    /* Timeline */
+    .timeline {
+      margin-top: 24px;
+    }
+
+    .timeline-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-content {
+      width: 100%;
+    }
+
+    .phase-badge {
+      background: var(--primary);
+      color: var(--white);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .phase-badge.phase-2 { background: var(--primary-light); }
+    .phase-badge.phase-3 { background: var(--accent); }
+    .phase-badge.phase-4 { background: #6b7280; }
+
+    .timeline-content h4 {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .timeline-content p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    /* Benefits List */
+    .benefits-category {
+      margin-bottom: 32px;
+    }
+
+    .benefits-category h4 {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+
+    .benefits-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--white);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .benefit-check {
+      width: 20px;
+      height: 20px;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .benefit-check svg {
+      width: 12px;
+      height: 12px;
+      stroke: white;
+      stroke-width: 3;
+    }
+
+    /* Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .metric-category {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+
+    .metric-category h4 {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .metric-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .metric-value {
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--bg);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Web Analysis */
+    .web-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .web-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+
+    .web-card h4 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .web-card .url {
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .web-card ul {
+      list-style: none;
+    }
+
+    .web-card li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      border-bottom: 1px solid var(--bg);
+    }
+
+    .web-card li:last-child {
+      border-bottom: none;
+    }
+
+    .web-card li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #FFC107;
+    }
+
+    /* Steps */
+    .steps-container {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .step {
+      flex: 1;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+
+    .step h4 {
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .contact-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px;
+      border: 1px solid var(--border);
+    }
+
+    .contact-card h4 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--primary);
+      stroke-width: 2;
+      fill: none;
+    }
+
+    /* Logo Container */
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .logo-container:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-logo {
+      max-width: 180px;
+      height: auto;
+      opacity: 0.9;
+    }
+
+    .contact-link {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-link:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    /* ROI highlight */
+    .roi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .roi-card {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .roi-card.accent {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    }
+
+    .roi-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .roi-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 240px;
+      }
+      .main {
+        margin-left: 240px;
+        padding: 24px 32px;
+      }
+      .stats-grid, .feature-grid, .benefits-list, .metrics-grid, .web-grid, .contact-grid, .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .roi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .steps-container {
+        flex-wrap: wrap;
+      }
+      .step {
+        flex: 1 1 calc(50% - 8px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Integrations */
+    .integrations-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .integration-tag {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: linear-gradient(135deg, #fef3e6, #fff8f0);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .highlight-box h4 {
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .highlight-box ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .highlight-box li {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 4px 0;
+    }
+
+    .highlight-box li::before {
+      content: '✓ ';
+      color: #FFC107;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>MyM Torres & Colobus</h1>
+      <p>Análisis de Proyectos 2026</p>
+    </div>
+    
+    <nav class="nav-section">
+      <div class="nav-item active" data-section="resumen">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Resumen Ejecutivo
+      </div>
+      
+      <div class="nav-section-title">Proyecto Principal</div>
+      
+      <div class="nav-item" data-section="certificaciones">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Sistema de Certificaciones
+      </div>
+      
+      <div class="nav-section-title">Proyectos Adicionales</div>
+      
+      <div class="nav-item" data-section="proyectos">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        8 Proyectos de Valor
+      </div>
+      
+      <div class="nav-item" data-section="web">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Mejoras Sitios Web
+      </div>
+      
+      <div class="nav-section-title">Implementación</div>
+      
+      <div class="nav-item" data-section="fases">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Plan por Fases
+      </div>
+      
+      <div class="nav-item" data-section="beneficios">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Beneficios Cero Papel
+      </div>
+      
+      <div class="nav-item" data-section="metricas">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        Métricas y ROI
+      </div>
+      
+      <div class="nav-section-title">Siguiente Paso</div>
+      
+      <div class="nav-item" data-section="contacto">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+        Próximos Pasos
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    
+    <!-- RESUMEN -->
+    <section id="resumen" class="section active">
+      <h2>Resumen Ejecutivo</h2>
+      <p class="section-subtitle">Este documento presenta un análisis de las oportunidades de mejora y proyectos de valor para MyM Torres S.A.S y Colobus, enfocándose en la gestión de certificaciones, digitalización, y cumplimiento normativo.</p>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">9</div>
+          <div class="stat-label">Proyectos identificados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">4</div>
+          <div class="stat-label">Fases de implementación</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">90%</div>
+          <div class="stat-label">Reducción vencimientos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">25h</div>
+          <div class="stat-label">Ahorro semanal</div>
+        </div>
+      </div>
+      
+      <h3>Enfoque Principal</h3>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4>Gestión de Certificaciones</h4>
+          <p>Control proactivo de vencimientos y cumplimiento normativo.</p>
+        </div>
+        <div class="feature-item">
+          <h4>Digitalización</h4>
+          <p>Migrar formatos físicos a formatos digitales.</p>
+        </div>
+        <div class="feature-item">
+          <h4>Experiencia del Cliente</h4>
+          <p>Portal de autoservicio para consulta y descarga de certificaciones.</p>
+        </div>
+      </div>
+      
+      <div class="highlight-box">
+        <h4>🎯 Proyecto Principal Recomendado</h4>
+        <p style="margin-bottom: 12px;">Sistema de Gestión de Certificaciones con Notificaciones - Navega por las diferentes opciones del menú lateral para explorar todos los detalles y proyectos propuestos.</p>
+      </div>
+    </section>
+    
+    <!-- CERTIFICACIONES -->
+    <section id="certificaciones" class="section">
+      <h2>Sistema de Gestión de Certificaciones</h2>
+      <p class="section-subtitle">Sistema integral para la gestión y notificación proactiva de vencimientos de certificaciones de trabajo en alturas y otras certificaciones relacionadas.</p>
+      
+      <div class="cards-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Gestión Centralizada de Certificaciones</div>
+            <span class="card-badge">Módulo Core</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <ul>
+            <li>Registro de certificaciones de personal (trabajo en alturas, ISO 9001, ICONTEC)</li>
+            <li>Certificaciones de productos y sistemas (líneas de vida, puntos de anclaje)</li>
+            <li>Certificaciones de clientes y proyectos</li>
+            <li>Certificaciones de equipos y herramientas</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Sistema de Alertas Inteligente</div>
+            <span class="card-badge">Automatización</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <ul>
+            <li>Notificaciones automáticas por email y SMS</li>
+            <li>Alertas escalonadas (90, 60, 30, 15, 7 días antes del vencimiento)</li>
+            <li>Alertas de vencimiento crítico (últimos 3 días)</li>
+            <li>Dashboard ejecutivo con resumen de certificaciones próximas a vencer</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Gestión Documental Digital (Cero Papel)</div>
+            <span class="card-badge">Digitalización</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <ul>
+            <li>Almacenamiento seguro en la nube de certificados digitales</li>
+            <li>OCR para digitalización de certificados físicos existentes</li>
+            <li>Firma digital y validación de documentos</li>
+            <li>Historial completo de renovaciones y actualizaciones</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Cumplimiento Normativo</div>
+            <span class="card-badge">Legal</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <ul>
+            <li>Integración con normativas colombianas (Resolución 1409 de 2012)</li>
+            <li>Cumplimiento con estándares internacionales (ANSI Z359, ISO 9001)</li>
+            <li>Reportes de cumplimiento para auditorías</li>
+            <li>Generación automática de certificados de cumplimiento</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Portal de Clientes</div>
+            <span class="card-badge">Experiencia</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <ul>
+            <li>Acceso para clientes a sus certificaciones</li>
+            <li>Descarga de certificados vigentes</li>
+            <li>Historial de inspecciones y mantenimientos</li>
+            <li>Solicitud de renovaciones en línea</li>
+          </ul>
+        </div>
+      </div>
+      </div>
+      
+      <div class="highlight-box">
+        <h4>✓ Valor Agregado</h4>
+        <ul>
+          <li>Reducción de riesgos legales y operativos</li>
+          <li>Mejora en la gestión de recursos humanos</li>
+          <li>Cumplimiento proactivo de normativas</li>
+          <li>Ahorro de tiempo en gestión administrativa</li>
+          <li>Mejora en la relación con clientes</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- PROYECTOS ADICIONALES -->
+    <section id="proyectos" class="section">
+      <h2>Proyectos Adicionales de Alto Valor</h2>
+      <p class="section-subtitle">8 oportunidades identificadas para complementar el sistema principal y maximizar la digitalización de operaciones.</p>
+      
+      <div class="projects-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">1. Sistema de Gestión de Mantenimientos Preventivos</div>
+            <span class="card-badge">Operaciones</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Problema:</strong> No hay sistema digitalizado para programar y rastrear mantenimientos de estructuras.</p>
+          <ul>
+            <li>Sistema de programación automática de mantenimientos</li>
+            <li>Checklist digital para inspecciones</li>
+            <li>Reportes fotográficos con geolocalización</li>
+            <li>Integración con certificaciones del personal</li>
+            <li>Notificaciones a clientes sobre próximos mantenimientos</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="card-title">2. CRM y Gestión de Proyectos Integrado</div>
+            <span class="card-badge">Comercial</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Problema:</strong> Trabajan con grandes clientes (CLARO, TIGO, ATC) sin sistema centralizado.</p>
+          <ul>
+            <li>Seguimiento de proyectos desde cotización hasta entrega</li>
+            <li>Gestión de clientes y contactos</li>
+            <li>Dashboard de proyectos activos</li>
+            <li>Generación automática de reportes de avance</li>
+            <li>Portal para clientes con seguimiento en tiempo real</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">3. Sistema de Inventario y Gestión de Stock Digital</div>
+            <span class="card-badge">Logística</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Problema:</strong> Colobus menciona "Stock de productos" pero no hay sistema visible.</p>
+          <ul>
+            <li>Control de inventario en tiempo real</li>
+            <li>Alertas de stock bajo</li>
+            <li>Gestión de materiales por proyecto</li>
+            <li>Integración con órdenes de compra</li>
+            <li>Códigos QR para identificación rápida</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+          </div>
+          <div>
+            <div class="card-title">4. Portal de Certificaciones para Clientes (Colobus)</div>
+            <span class="card-badge">Clientes</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Problema:</strong> Sección "Tu certificado" existe pero necesita mejorarse.</p>
+          <ul>
+            <li>Consultar estado de certificaciones</li>
+            <li>Descargar certificados vigentes</li>
+            <li>Ver historial de inspecciones</li>
+            <li>Solicitar nuevas certificaciones</li>
+            <li>Acceder a manuales y fichas técnicas</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">5. Sistema de Capacitación y Certificación Digital</div>
+            <span class="card-badge">RRHH</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Problema:</strong> No hay sistema para gestionar capacitaciones del personal.</p>
+          <ul>
+            <li>Plataforma de e-learning para capacitaciones</li>
+            <li>Gestión de cursos y certificaciones internas</li>
+            <li>Seguimiento de competencias del personal</li>
+            <li>Alertas de vencimiento de capacitaciones</li>
+            <li>Reportes de cumplimiento</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <div>
+            <div class="card-title">6. Aplicación Móvil para Técnicos de Campo</div>
+            <span class="card-badge">Mobile</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Problema:</strong> Técnicos en campo necesitan acceso a información y herramientas.</p>
+          <ul>
+            <li>Acceso a certificaciones del personal</li>
+            <li>Checklist de inspección digital</li>
+            <li>Captura de fotos y videos en campo</li>
+            <li>Firma digital de reportes</li>
+            <li>Sincronización offline y geolocalización</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="card-title">7. Sistema de Gestión de Documentación Técnica</div>
+            <span class="card-badge">Documentos</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Problema:</strong> Múltiples documentos técnicos que pueden digitalizarse.</p>
+          <ul>
+            <li>Repositorio centralizado de documentos técnicos</li>
+            <li>Sistema de versionamiento</li>
+            <li>Control de acceso por roles</li>
+            <li>Búsqueda avanzada</li>
+            <li>Compartir documentos con clientes de forma segura</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          </div>
+          <div>
+            <div class="card-title">8. Dashboard de Business Intelligence (BI)</div>
+            <span class="card-badge">Analítica</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <p><strong>Valor:</strong> Toma de decisiones basada en datos en tiempo real.</p>
+          <ul>
+            <li>Certificaciones próximas a vencer</li>
+            <li>Proyectos activos y su estado</li>
+            <li>Personal certificado disponible</li>
+            <li>Mantenimientos programados</li>
+            <li>Ventas, clientes y cumplimiento normativo</li>
+          </ul>
+        </div>
+      </div>
+      </div>
+    </section>
+    
+    <!-- MEJORAS WEB -->
+    <section id="web" class="section">
+      <h2>Análisis de Mejoras en Sitios Web</h2>
+      <p class="section-subtitle">Oportunidades identificadas para mejorar la presencia digital de ambas empresas.</p>
+      
+      <div class="web-grid">
+        <div class="web-card">
+          <h4>MyM Torres</h4>
+          <div class="url">mymtorres.com</div>
+          <ul>
+            <li>Sección "Tu Certificado" necesita funcionalidad completa</li>
+            <li>Formulario de contacto con integración a CRM</li>
+            <li>Agregar chat en vivo o WhatsApp integrado</li>
+            <li>Actualizar información (inconsistencia en años de experiencia)</li>
+            <li>Agregar blog con contenido técnico y normativo</li>
+            <li>Optimizar SEO para búsquedas de certificaciones</li>
+          </ul>
+        </div>
+        
+        <div class="web-card">
+          <h4>Colobus</h4>
+          <div class="url">colobus.co</div>
+          <ul>
+            <li>Sección "Tu Certificado" necesita desarrollo completo</li>
+            <li>Mejorar acceso y descarga de fichas técnicas</li>
+            <li>Agregar visualizador interactivo de documentos</li>
+            <li>Formulario en línea para solicitar certificaciones</li>
+            <li>Sistema de seguimiento de estado de solicitudes</li>
+            <li>Integración con portal de MyM Torres</li>
+          </ul>
+        </div>
+      </div>
+      
+      <h3>Integraciones Técnicas Necesarias</h3>
+      <div class="integrations-list">
+        <span class="integration-tag">📧 Email corporativo</span>
+        <span class="integration-tag">💬 WhatsApp Business API</span>
+        <span class="integration-tag">✍️ Firma digital</span>
+        <span class="integration-tag">📄 OCR para digitalización</span>
+        <span class="integration-tag">🔗 APIs de normativas</span>
+      </div>
+    </section>
+    
+    <!-- FASES -->
+    <section id="fases" class="section">
+      <h2>Plan de Implementación por Fases</h2>
+      <p class="section-subtitle">Priorización estratégica que entrega valor inmediato y permite crecimiento gradual.</p>
+      
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>Fase 1 - Crítica</h4>
+            <p>
+              <strong>1.</strong> Sistema de Gestión de Certificaciones con Notificaciones<br>
+              <strong>2.</strong> Portal de Certificaciones para Clientes (Colobus)
+            </p>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>Fase 2 - Alta Prioridad</h4>
+            <p>
+              <strong>3.</strong> Sistema de Gestión de Mantenimientos Preventivos<br>
+              <strong>4.</strong> Aplicación Móvil para Técnicos de Campo
+            </p>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>Fase 3 - Valor Agregado</h4>
+            <p>
+              <strong>5.</strong> CRM y Gestión de Proyectos Integrado<br>
+              <strong>6.</strong> Sistema de Capacitación y Certificación Digital<br>
+              <strong>7.</strong> Dashboard de Business Intelligence
+            </p>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>Fase 4 - Optimización</h4>
+            <p>
+              <strong>8.</strong> Sistema de Inventario y Gestión de Stock Digital<br>
+              <strong>9.</strong> Sistema de Gestión de Documentación Técnica
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- BENEFICIOS -->
+    <section id="beneficios" class="section">
+      <h2>Beneficios del Enfoque "Cero Papel"</h2>
+      <p class="section-subtitle">Impacto positivo en operaciones, cumplimiento normativo y experiencia del cliente.</p>
+      
+      <div class="benefits-category">
+        <h4>🏭 Impacto Operativo</h4>
+        <div class="benefits-list">
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Reducción de costos de almacenamiento físico</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Acceso inmediato a documentos desde cualquier lugar</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Eliminación de pérdida de documentos</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Búsqueda rápida de información</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Compartir documentos de forma instantánea</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="benefits-category">
+        <h4>📋 Impacto en Cumplimiento</h4>
+        <div class="benefits-list">
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Trazabilidad completa de certificaciones</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Auditorías más eficientes</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Cumplimiento de normativas de protección de datos</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Historial completo y permanente</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="benefits-category">
+        <h4>👥 Impacto en Clientes</h4>
+        <div class="benefits-list">
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Acceso 24/7 a sus certificaciones</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Respuesta más rápida a solicitudes</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Mayor transparencia en procesos</span>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span>Mejor experiencia de servicio</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- METRICAS -->
+    <section id="metricas" class="section">
+      <h2>Métricas de Éxito y ROI</h2>
+      <p class="section-subtitle">Indicadores clave para medir el éxito de la implementación y retorno de inversión esperado.</p>
+      
+      <div class="metrics-grid">
+        <div class="metric-category">
+          <h4>📊 Sistema de Certificaciones</h4>
+          <div class="metric-item">
+            <span class="metric-label">Reducción certificaciones vencidas</span>
+            <span class="metric-value">90%</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Tiempo respuesta renovaciones</span>
+            <span class="metric-value">< 48h</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Certificaciones digitalizadas</span>
+            <span class="metric-value">100%</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Satisfacción del cliente</span>
+            <span class="metric-value">> 90%</span>
+          </div>
+        </div>
+        
+        <div class="metric-category">
+          <h4>📄 Política Cero Papel</h4>
+          <div class="metric-item">
+            <span class="metric-label">Reducción uso de papel</span>
+            <span class="metric-value">80%</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Documentos nuevos digitales</span>
+            <span class="metric-value">100%</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Tiempo búsqueda documentos</span>
+            <span class="metric-value">< 30s</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Ahorro gestión documental</span>
+            <span class="metric-value">30-40%</span>
+          </div>
+        </div>
+      </div>
+      
+      <h3>Retorno de Inversión Esperado</h3>
+      
+      <div class="roi-grid">
+        <div class="roi-card">
+          <div class="roi-value">20-30h</div>
+          <div class="roi-label">Ahorro semanal en tiempo administrativo</div>
+        </div>
+        <div class="roi-card accent">
+          <div class="roi-value">25-35%</div>
+          <div class="roi-label">Mejora en eficiencia operativa</div>
+        </div>
+        <div class="roi-card">
+          <div class="roi-value">40-50%</div>
+          <div class="roi-label">Aumento satisfacción del cliente</div>
+        </div>
+        <div class="roi-card accent">
+          <div class="roi-value">15-25%</div>
+          <div class="roi-label">Reducción de costos operativos</div>
+        </div>
+        <div class="roi-card">
+          <div class="roi-value">$$$</div>
+          <div class="roi-label">Ahorro en multas y sanciones evitadas</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CONTACTO -->
+    <section id="contacto" class="section">
+      <h2>Próximos Pasos</h2>
+      <p class="section-subtitle">Un proceso simple para iniciar la transformación digital de su empresa.</p>
+      
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h4>Reunión de Descubrimiento</h4>
+          <p>Validar necesidades específicas</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h4>Análisis de Procesos</h4>
+          <p>Gestión actual de certificaciones</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h4>Definición de Alcance</h4>
+          <p>Proyecto principal y prioridades</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h4>Propuesta Técnica</h4>
+          <p>Tiempos y costos detallados</p>
+        </div>
+        <div class="step">
+          <div class="step-number">5</div>
+          <h4>Prototipo MVP</h4>
+          <p>Sistema de certificaciones</p>
+        </div>
+        <div class="step">
+          <div class="step-number">6</div>
+          <h4>Implementación</h4>
+          <p>Plan por fases</p>
+        </div>
+      </div>
+      
+      <h3>Información de Contacto</h3>
+      
+      <div class="contact-grid">
+        <a href="https://www.jegasolutions.co/" target="_blank" rel="noopener noreferrer" class="logo-container">
+          <img src="LogoV2.png" alt="JEGASolutions Logo" class="contact-logo">
+        </a>
+        
+        <div class="contact-card">
+          <h4>Email</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <a href="mailto:JaimeGallo@jegasolutions.co" class="contact-link">JaimeGallo@jegasolutions.co</a>
+          </div>
+        </div>
+        
+        <div class="contact-card">
+          <h4>WhatsApp</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg></div>
+            <a href="https://wa.me/573136093516" target="_blank" rel="noopener noreferrer" class="contact-link">+57 313 609 3516</a>
+          </div>
+          <div class="contact-item" style="padding-left: 48px; margin-top: -8px;">
+            <span style="font-size: 0.85rem; color: var(--text-light);">Lun - Vie: 8:00 AM - 6:00 PM</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+</div>
+
+<script>
+  // Navigation
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      // Remove active from all nav items
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      // Add active to clicked item
+      item.classList.add('active');
+      
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      // Show target section
+      const targetId = item.getAttribute('data-section');
+      document.getElementById(targetId).classList.add('active');
+      
+      // Scroll to top of main content
+      document.querySelector('.main').scrollTo(0, 0);
+    });
+  });
+</script>
+
+</body>
+</html>

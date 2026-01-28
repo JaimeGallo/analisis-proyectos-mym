@@ -1,0 +1,17 @@
+{
+  "name": "analisis-proyectos-mym",
+  "version": "1.0.0",
+  "description": "Análisis de Proyectos - MyM Torres & Colobus",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'No build step required for static site'"
+  },
+  "keywords": [
+    "analisis",
+    "proyectos",
+    "mym-torres",
+    "colobus"
+  ],
+  "author": "Jega Solutions",
+  "license": "MIT"
+}
