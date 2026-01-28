@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Análisis de Proyectos - MyM Torres & Colobus",
   "scripts": {
-    "dev": "npx serve public"
+    "dev": "npx serve ."
   },
   "keywords": [
     "analisis",
