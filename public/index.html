@@ -707,12 +707,62 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
+    .horizontal-nav-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .horizontal-nav-scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: var(--white);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1001;
+      transition: all 0.2s;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .horizontal-nav-scroll-btn.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .horizontal-nav-scroll-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .horizontal-nav-scroll-btn.left {
+      left: 8px;
+    }
+
+    .horizontal-nav-scroll-btn.right {
+      right: 8px;
+    }
+
+    .horizontal-nav-scroll-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.5;
+    }
+
     .horizontal-nav-container {
       display: flex;
       overflow-x: auto;
       overflow-y: hidden;
       gap: 8px;
-      padding: 0 16px;
+      padding: 0 48px;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
@@ -865,39 +915,51 @@
 
 <!-- Horizontal Mobile Menu -->
 <nav class="horizontal-nav" id="horizontalNav">
-  <div class="horizontal-nav-container">
-    <div class="horizontal-nav-item active" data-section="resumen">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      Resumen
+  <div class="horizontal-nav-wrapper">
+    <button class="horizontal-nav-scroll-btn left" id="scrollLeftBtn" aria-label="Scroll left">
+      <svg viewBox="0 0 24 24" fill="none">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <div class="horizontal-nav-container" id="horizontalNavContainer">
+      <div class="horizontal-nav-item active" data-section="resumen">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Resumen
+      </div>
+      <div class="horizontal-nav-item" data-section="certificaciones">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Certificaciones
+      </div>
+      <div class="horizontal-nav-item" data-section="proyectos">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Proyectos
+      </div>
+      <div class="horizontal-nav-item" data-section="web">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Web
+      </div>
+      <div class="horizontal-nav-item" data-section="fases">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Fases
+      </div>
+      <div class="horizontal-nav-item" data-section="beneficios">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Beneficios
+      </div>
+      <div class="horizontal-nav-item" data-section="metricas">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        Métricas
+      </div>
+      <div class="horizontal-nav-item" data-section="contacto">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+        Contacto
+      </div>
     </div>
-    <div class="horizontal-nav-item" data-section="certificaciones">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Certificaciones
-    </div>
-    <div class="horizontal-nav-item" data-section="proyectos">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      Proyectos
-    </div>
-    <div class="horizontal-nav-item" data-section="web">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      Web
-    </div>
-    <div class="horizontal-nav-item" data-section="fases">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Fases
-    </div>
-    <div class="horizontal-nav-item" data-section="beneficios">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      Beneficios
-    </div>
-    <div class="horizontal-nav-item" data-section="metricas">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-      Métricas
-    </div>
-    <div class="horizontal-nav-item" data-section="contacto">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
-      Contacto
-    </div>
+    <button class="horizontal-nav-scroll-btn right" id="scrollRightBtn" aria-label="Scroll right">
+      <svg viewBox="0 0 24 24" fill="none">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
   </div>
 </nav>
 
@@ -1664,6 +1726,62 @@
       navigateToSection(targetId);
     });
   });
+
+  // Horizontal scroll arrows functionality
+  const horizontalNavContainer = document.getElementById('horizontalNavContainer');
+  const scrollLeftBtn = document.getElementById('scrollLeftBtn');
+  const scrollRightBtn = document.getElementById('scrollRightBtn');
+
+  function updateScrollButtons() {
+    if (!horizontalNavContainer || !scrollLeftBtn || !scrollRightBtn) return;
+    
+    const container = horizontalNavContainer;
+    const scrollLeft = container.scrollLeft;
+    const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+    
+    // Show/hide left arrow
+    if (scrollLeft > 10) {
+      scrollLeftBtn.classList.add('visible');
+    } else {
+      scrollLeftBtn.classList.remove('visible');
+    }
+    
+    // Show/hide right arrow
+    if (scrollLeft < scrollWidth - clientWidth - 10) {
+      scrollRightBtn.classList.add('visible');
+    } else {
+      scrollRightBtn.classList.remove('visible');
+    }
+  }
+
+  // Scroll functions
+  if (scrollLeftBtn) {
+    scrollLeftBtn.addEventListener('click', () => {
+      if (horizontalNavContainer) {
+        horizontalNavContainer.scrollBy({ left: -200, behavior: 'smooth' });
+      }
+    });
+  }
+
+  if (scrollRightBtn) {
+    scrollRightBtn.addEventListener('click', () => {
+      if (horizontalNavContainer) {
+        horizontalNavContainer.scrollBy({ left: 200, behavior: 'smooth' });
+      }
+    });
+  }
+
+  // Update arrows on scroll
+  if (horizontalNavContainer) {
+    horizontalNavContainer.addEventListener('scroll', updateScrollButtons);
+  }
+
+  // Update arrows on resize
+  window.addEventListener('resize', updateScrollButtons);
+
+  // Initial check
+  setTimeout(updateScrollButtons, 100);
 </script>
 
 </body>
